@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📝</text></svg>">
+</head>
+
+<body>
+    <header>
+        <div class="header-left">
+            <h1>Notes</h1>
+        </div>
+        <div id="file-status" class="header-center" hidden>
+            <span id="current-filename"></span>
+            <span id="unsaved-indicator" hidden>• Unsaved</span>
+        </div>
+        <div class="header-right">
+            <button id="save-btn" class="primary-btn" disabled hidden>Save</button>
+            <button id="open-dir-btn" class="secondary-btn">Open Folder</button>
+            <button id="load-demo-btn" class="secondary-btn">Demo</button>
+        </div>
+    </header>
+
+    <div class="container">
+        <nav id="file-tree" class="file-tree" aria-label="File Navigation">
+            <div class="empty-state">No folder selected</div>
+        </nav>
+
+        <main id="editor-container">
+            <div id="welcome-message" class="empty-state">
+                <p>Select a file to edit</p>
+            </div>
+            <div id="editor-view" hidden>
+                <textarea id="editor" spellcheck="false"></textarea>
+            </div>
+        </main>
+    </div>
+
+    <script type="module" src="src/app.js"></script>
+</body>
+
+</html>
