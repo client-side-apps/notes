@@ -5,9 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Notes</title>
+    <meta name="description" content="A simple, local-first markdown note-taking app.">
     <link rel="stylesheet" href="style.css">
-    <link rel="icon"
-        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📝</text></svg>">
+    <link rel="icon" href="icon.svg" type="image/svg+xml">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#ffffff">
 </head>
 
 <body>
@@ -44,6 +46,8 @@
         </main>
     </div>
 
+
+
     <!-- Unsaved Changes Dialog -->
     <dialog id="unsaved-dialog" aria-labelledby="unsaved-dialog-title">
         <div class="dialog-content">
@@ -57,6 +61,19 @@
     </dialog>
 
     <script type="module" src="src/app.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                    })
+                    .catch(err => {
+                        console.log('ServiceWorker registration failed: ', err);
+                    });
+            });
+        }
+    </script>
 </body>
 
 </html>

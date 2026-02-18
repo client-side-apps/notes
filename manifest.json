@@ -1,0 +1,16 @@
+{
+  "name": "Notes",
+  "short_name": "Notes",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f3f4f6",
+  "theme_color": "#ffffff",
+  "description": "A simple, local-first markdown note-taking app.",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
