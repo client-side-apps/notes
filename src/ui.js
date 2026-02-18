@@ -114,9 +114,10 @@ export function renderFileTree(files, container = document.getElementById('file-
         const li = document.createElement('li');
 
         if (file.kind === 'directory') {
-            const folderDiv = document.createElement('div');
-            folderDiv.className = 'folder-item';
-            folderDiv.innerHTML = `<span class="icon">📁</span> ${file.name}`;
+            const folderBtn = document.createElement('button');
+            folderBtn.className = 'folder-item';
+            folderBtn.innerHTML = `<span class="icon">📁</span> ${file.name}`;
+            folderBtn.setAttribute('aria-expanded', 'false');
 
             const childContainer = document.createElement('div');
             childContainer.className = 'folder-content';
@@ -129,29 +130,31 @@ export function renderFileTree(files, container = document.getElementById('file-
                 childContainer.innerHTML = '<div class="empty-folder">Empty</div>';
             }
 
-            folderDiv.addEventListener('click', (e) => {
+            folderBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 // Toggle Expand/Collapse
                 if (childContainer.hidden) {
-                    folderDiv.classList.add('expanded');
+                    folderBtn.classList.add('expanded');
+                    folderBtn.setAttribute('aria-expanded', 'true');
                     childContainer.hidden = false;
                 } else {
-                    folderDiv.classList.remove('expanded');
+                    folderBtn.classList.remove('expanded');
+                    folderBtn.setAttribute('aria-expanded', 'false');
                     childContainer.hidden = true;
                 }
             });
 
-            li.appendChild(folderDiv);
+            li.appendChild(folderBtn);
             li.appendChild(childContainer);
         } else {
-            const fileDiv = document.createElement('div');
-            fileDiv.className = 'file-item';
-            fileDiv.innerHTML = `<span class="icon">📄</span> ${file.name}`;
-            fileDiv.addEventListener('click', (e) => {
+            const fileBtn = document.createElement('button');
+            fileBtn.className = 'file-item';
+            fileBtn.innerHTML = `<span class="icon">📄</span> ${file.name}`;
+            fileBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 loadFile(file);
             });
-            li.appendChild(fileDiv);
+            li.appendChild(fileBtn);
         }
 
         list.appendChild(li);
