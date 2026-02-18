@@ -158,8 +158,13 @@ header {
     gap: 8px;
 }
 
-overflow: hidden;
-position: relative;
+
+
+/* Layout container */
+.container {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
 }
 
 /* File Tree */
@@ -272,6 +277,8 @@ main {
     background-color: var(--text-secondary);
 }
 
+
+
 #editor {
     flex: 1;
     width: 100%;
@@ -285,10 +292,22 @@ main {
     color: var(--text-primary);
     resize: none;
     outline: none;
+    white-space: pre;
+    overflow-y: scroll;
+    /* Always show scrollbar to match line numbers if synced */
 }
 
 #editor:focus {
     /* Subtle focus state if needed, usually editor is clean */
+}
+
+/* Editor Wrapper */
+.editor-wrapper {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+    background-color: var(--bg-color);
 }
 
 /* Empty States */
@@ -343,4 +362,105 @@ footer {
     display: flex;
     flex-direction: column;
     height: 100%;
+}
+
+/* Toast Notifications */
+#toast-container {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    pointer-events: none;
+}
+
+.toast {
+    display: block;
+    /* Override default dialog display behavior when not open, though we use .show() */
+    position: static;
+    /* Override dialog fixed/absolute positioning to let flexbox handle stacking */
+    margin: 0;
+    /* Reset dialog margin */
+    border: none;
+    /* Reset dialog border */
+    background-color: var(--surface-color);
+    color: var(--text-primary);
+    padding: 12px 20px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    font-size: 0.9rem;
+    font-weight: 500;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    border-left: 4px solid var(--primary-color);
+    pointer-events: auto;
+    min-width: 250px;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.toast-success {
+    border-left-color: var(--success-color);
+}
+
+.toast-error {
+    border-left-color: var(--danger-color);
+}
+
+.toast-info {
+    border-left-color: var(--primary-color);
+}
+
+/* Unsaved Changes Dialog */
+#unsaved-dialog {
+    padding: 0;
+    border: none;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    background-color: var(--surface-color);
+    color: var(--text-primary);
+    max-width: 400px;
+    width: 90%;
+}
+
+#unsaved-dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(2px);
+}
+
+.dialog-content {
+    padding: 24px;
+}
+
+.dialog-content h3 {
+    margin: 0 0 12px 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.dialog-content p {
+    margin: 0 0 24px 0;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+.dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.danger-btn {
+    background-color: var(--danger-color);
+}
+
+.danger-btn:hover {
+    background-color: #dc2626;
+    /* Darker red */
 }

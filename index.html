@@ -21,6 +21,7 @@
         </div>
         <div class="header-right">
             <button id="save-btn" class="primary-btn" disabled hidden>Save</button>
+            <button id="restore-btn" class="secondary-btn" hidden title="Restore last session">Restore</button>
             <button id="open-dir-btn" class="secondary-btn">Open Folder</button>
             <button id="load-demo-btn" class="secondary-btn">Demo</button>
         </div>
@@ -28,18 +29,32 @@
 
     <div class="container">
         <nav id="file-tree" class="file-tree" aria-label="File Navigation">
-            <div class="empty-state">No folder selected</div>
+            <div class="empty-state"></div>
         </nav>
 
         <main id="editor-container">
             <div id="welcome-message" class="empty-state">
-                <p>Select a file to edit</p>
+                <p>Open a folder</p>
             </div>
             <div id="editor-view" hidden>
-                <textarea id="editor" spellcheck="false"></textarea>
+                <div class="editor-wrapper">
+                    <textarea id="editor" spellcheck="false"></textarea>
+                </div>
             </div>
         </main>
     </div>
+
+    <!-- Unsaved Changes Dialog -->
+    <dialog id="unsaved-dialog">
+        <div class="dialog-content">
+            <h3>Unsaved Changes</h3>
+            <p>You have unsaved changes. Are you sure you want to discard them?</p>
+            <div class="dialog-actions">
+                <button id="cancel-nav-btn" class="secondary-btn">Cancel</button>
+                <button id="discard-changes-btn" class="primary-btn danger-btn">Discard</button>
+            </div>
+        </div>
+    </dialog>
 
     <script type="module" src="src/app.js"></script>
 </body>

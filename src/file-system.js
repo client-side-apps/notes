@@ -1,3 +1,9 @@
+import * as DB from './db.js';
+
+/**
+ * Opens a directory picker and stores the handle.
+ * @returns {Promise<FileSystemDirectoryHandle|null>}
+ */
 export async function openDirectory() {
     if (!window.showDirectoryPicker) {
         alert('File System Access API is not supported in this browser.');
@@ -5,6 +11,7 @@ export async function openDirectory() {
     }
     try {
         const dirHandle = await window.showDirectoryPicker();
+        await DB.set('root_dir', dirHandle);
         return dirHandle;
     } catch (err) {
         if (err.name === 'AbortError') {
@@ -14,6 +21,39 @@ export async function openDirectory() {
     }
 }
 
+/**
+ * Retrieves the stored directory handle from the previous session.
+ * @returns {Promise<FileSystemDirectoryHandle|undefined>}
+ */
+export async function restoreDirectory() {
+    return await DB.get('root_dir');
+}
+
+/**
+ * Verifies if the user has granted permission to read/write.
+ * @param {FileSystemHandle} fileHandle 
+ * @param {boolean} readWrite 
+ * @returns {Promise<boolean>}
+ */
+export async function verifyPermission(fileHandle, readWrite) {
+    const options = {};
+    if (readWrite) {
+        options.mode = 'readwrite';
+    }
+    if ((await fileHandle.queryPermission(options)) === 'granted') {
+        return true;
+    }
+    if ((await fileHandle.requestPermission(options)) === 'granted') {
+        return true;
+    }
+    return false;
+}
+
+/**
+ * Reads a directory and returns its entries (non-recursive).
+ * @param {FileSystemDirectoryHandle} dirHandle 
+ * @returns {Promise<Array<{kind: 'file'|'directory', name: string, handle: FileSystemHandle, children?: Array}>>}
+ */
 export async function readDirectory(dirHandle) {
     const entries = [];
     for await (const entry of dirHandle.values()) {
@@ -26,16 +66,14 @@ export async function readDirectory(dirHandle) {
                 });
             }
         } else if (entry.kind === 'directory') {
-            // Recursive read
+            // Recursive: Read children immediately
             const children = await readDirectory(entry);
-            if (children.length > 0) { // Only add directories that have relevant content
-                entries.push({
-                    kind: 'directory',
-                    name: entry.name,
-                    handle: entry,
-                    children: children
-                });
-            }
+            entries.push({
+                kind: 'directory',
+                name: entry.name,
+                handle: entry,
+                children: children
+            });
         }
     }
     return entries;
